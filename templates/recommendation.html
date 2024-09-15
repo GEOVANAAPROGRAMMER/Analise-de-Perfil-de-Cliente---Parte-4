@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Recomendação de Oferta</title>
+</head>
+<body>
+    <h1>Recomendação de Oferta</h1>
+    <p>Probabilidade de compra: {{ probabilidade_compra }}%</p>
+    <h2>Ofertas Recomendadas</h2>
+    {{ ofertas|safe }}
+    <a href="{{ url_for('index') }}" class="button">Retorne a página Inicial</a>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Início</title>
+</head>
+<body class="index-body">
+    <div class="index-container">
+        <h1>Bem-vindo ao Sistema de Análise de Perfil de Clientes</h1>
+        <div class="index-button-container">
+            <a href="{{ url_for('dashboard') }}" class="index-button">Dashboard</a>
+            <a href="{{ url_for('add_client') }}" class="index-button">Adicionar Cliente</a>
+        </div>
+    </div>
+</body>
+</html>
+
+

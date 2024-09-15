@@ -1,0 +1,10 @@
+pandas
+numpy
+scikit-learn
+matplotlib
+flask
+sentencepiece
+black
+jedi
+openpyxl
+watchdog

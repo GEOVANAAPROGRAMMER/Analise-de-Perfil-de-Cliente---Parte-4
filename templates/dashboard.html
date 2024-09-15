@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-header">
+        <h1>Dashboard</h1>
+    </div>
+    <div class="dashboard-container">
+        <div class="dashboard-chart-container">
+            <!-- Gráfico 1 -->
+            <div class="dashboard-chart">
+                <h2>Top 5 Características que Influenciam a Compra</h2>
+                <img src="{{ top_features_url }}" alt="Top 5 Características que Influenciam a Compra">
+            </div>
+            <!-- Gráfico 2 -->
+            <div class="dashboard-chart">
+                <h2>Distribuição de Gênero</h2>
+                <img src="{{ gender_distribution_url }}" alt="Distribuição de Gênero">
+            </div>
+            <!-- Gráfico 3 -->
+            <div class="dashboard-chart">
+                <h2>Número de Compras por Estado</h2>
+                <img src="{{ compras_por_estado_url }}" alt="Número de Compras por Estado">
+            </div>
+            <!-- Gráfico 4 -->
+            <div class="dashboard-chart">
+                <h2>Distribuição de Finalidades</h2>
+                <img src="{{ finalidades_url }}" alt="Distribuição de Finalidades">
+            </div>
+        </div>
+        <a href="{{ url_for('index') }}" class="dashboard-button">Retorne à Página Inicial</a>
+    </div>
+</body>
+</html>
