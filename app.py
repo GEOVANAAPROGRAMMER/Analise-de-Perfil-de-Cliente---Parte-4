@@ -12,12 +12,19 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
 from sklearn.neighbors import NearestNeighbors
 import re
+import requests
+import json
+from senha import API_KEY
+
+headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
+link = "https://api.openai.com/v1/chat/completions"
+id_modelo = "gpt-3.5-turbo"
 
 app = Flask(__name__)
 
 # Carregar dados e modelos
-url_perfil = 'datafreme/Perfil de Clientes.xlsx'
-url_ofertas = 'datafreme/Ofertas.xlsx'
+url_perfil = 'dataframe/Perfil de Clientes.xlsx'
+url_ofertas = 'dataframe/Ofertas.xlsx'
 perfil_df = pd.read_excel(url_perfil)
 ofertas_df = pd.read_excel(url_ofertas)
 
@@ -194,53 +201,107 @@ def dashboard():
                            compras_por_estado_url=compras_por_estado_url,
                            finalidades_url=finalidades_url)
 
+
 @app.route('/add_client', methods=['GET', 'POST'])
 def add_client():
     if request.method == 'POST':
-        idade = int(request.form.get('age'))
-        genero = request.form.get('gender')
-        estado = request.form.get('state')
-        finalidade_profissional = int(request.form.get('purpose_professional', 0))
-        finalidade_academica = int(request.form.get('purpose_academic', 0))
-        finalidade_entretenimento = int(request.form.get('purpose_entertainment', 0))
-        faixa_salarial = request.form.get('salary_range')
+        try:
+            idade = int(request.form.get('age'))
+            genero = request.form.get('gender')
+            estado = request.form.get('state')
+            finalidade_profissional = int(request.form.get('purpose_professional', 0))
+            finalidade_academica = int(request.form.get('purpose_academic', 0))
+            finalidade_entretenimento = int(request.form.get('purpose_entertainment', 0))
+            faixa_salarial = request.form.get('salary_range')
 
-        # Criar um DataFrame com as informações do cliente
-        client_data = pd.DataFrame([{
-            'Idade': idade,
-            'Finalidade Profissional': finalidade_profissional,
-            'Finalidade Acadêmica': finalidade_academica,
-            'Finalidade Entreterimento': finalidade_entretenimento,
-            'Faixa idade': '',  # Necessário para compatibilidade com o modelo
-            'Gênero': genero,
-            'Estado onde mora': estado,
-            'UF onde mora': '',  # Pode ser adicionado conforme necessário
-            'Região onde mora': '',  # Pode ser adicionado conforme necessário
-            'Nível de Ensino': '',  # Adicione valores reais conforme necessário
-            'Área de Formação': '',  # Adicione valores reais conforme necessário
-            'Situação atual de trabalho': '',  # Adicione valores reais conforme necessário
-            'Setor': '',  # Adicione valores reais conforme necessário
-            'Forma de trabalho': '',  # Adicione valores reais conforme necessário
-            'Faixa salarial': faixa_salarial
-        }])
+            # Criar um DataFrame com as informações do cliente
+            client_data = pd.DataFrame([{
+                'Idade': idade,
+                'Finalidade Profissional': finalidade_profissional,
+                'Finalidade Acadêmica': finalidade_academica,
+                'Finalidade Entreterimento': finalidade_entretenimento,
+                'Faixa idade': '',  # Necessário para compatibilidade com o modelo
+                'Gênero': genero,
+                'Estado onde mora': estado,
+                'UF onde mora': '',  # Pode ser adicionado conforme necessário
+                'Região onde mora': '',  # Pode ser adicionado conforme necessário
+                'Nível de Ensino': '',  # Adicione valores reais conforme necessário
+                'Área de Formação': '',  # Adicione valores reais conforme necessário
+                'Situação atual de trabalho': '',  # Adicione valores reais conforme necessário
+                'Setor': '',  # Adicione valores reais conforme necessário
+                'Forma de trabalho': '',  # Adicione valores reais conforme necessário
+                'Faixa salarial': faixa_salarial
+            }])
 
-        # Preprocessar o novo cliente
-        cliente_preprocessado = modelo.named_steps['preprocessor'].transform(client_data)
+            # Preprocessar o novo cliente
+            cliente_preprocessado = modelo.named_steps['preprocessor'].transform(client_data)
 
-        # Prever a probabilidade de compra
-        probabilidade_compra = modelo.named_steps['classifier'].predict_proba(cliente_preprocessado)[0][1]
+            # Prever a probabilidade de compra
+            probabilidade_compra = modelo.named_steps['classifier'].predict_proba(cliente_preprocessado)[0][1]
 
-        # Recomendação de ofertas com base na faixa salarial
-        ofertas_recomendadas = recomendar_ofertas(faixa_salarial, ofertas_df)
+            # Filtrar perfis de clientes que compraram
+            clientes_que_compraram = perfil_df[perfil_df['Comprou'] == 1]
+            similaridade = clientes_que_compraram[
+                (clientes_que_compraram['Idade'].between(idade - 5, idade + 5)) &
+                (clientes_que_compraram['Gênero'] == genero) &
+                (clientes_que_compraram['Estado onde mora'] == estado)
+            ]
 
-        if isinstance(ofertas_recomendadas, pd.DataFrame):
-            ofertas_html = ofertas_recomendadas.to_html()
-        else:
-            ofertas_html = ofertas_recomendadas  # Mensagem de erro se não for um DataFrame
+            # Se houver clientes similares, coletar informações
+            if not similaridade.empty:
+                perfis_similares = similaridade.describe(include='all').to_dict()
+                mensagem_perfis = f"Perfis de clientes que compraram produtos semelhantes: {perfis_similares}."
+            else:
+                mensagem_perfis = "Não foram encontrados perfis similares que compraram."
 
-        return render_template('recommendation.html', probabilidade_compra=probabilidade_compra * 100, ofertas=ofertas_html)
-    
+            # Preparar mensagem para o ChatGPT com todas as características
+            mensagem_chatgpt = (
+                f"Cliente com as seguintes características: "
+                f"Idade: {idade}, Gênero: {genero}, Estado: {estado}, "
+                f"Faixa Salarial: '{faixa_salarial}'. "
+                f"Com base nas características do cliente, recomende uma oferta clara e específica.\n\n"
+                f"Aqui estão algumas ofertas recomendadas: {ofertas_df}. "
+                f"Além disso, considere o histórico de compras de clientes com perfil semelhante, que frequentemente adquirem produtos como: [exemplos de produtos]. "
+                f"Com essas informações, quais ofertas específicas você recomendaria?"
+                f"Oferte apenas uma das ofertas disponíveis,"
+                f"Seja breve na resposta, não precisa descrever exatamente as caracteristicas do cliente adicionado, apenas descreva brevemente o perfil, por exemplo: Trata-se de um cliente com tal perfil,"
+                f"Escreva em 3 linhas a resposta e a oferta deve estar em um formato diferente, mais legível e em uma linha separada"
+            )
+
+            # Enviar mensagem ao ChatGPT e receber resposta
+            resposta_chatgpt = enviar_mensagem_chatgpt(mensagem_chatgpt)
+
+            return render_template('recommendation.html',
+                                   probabilidade_compra=probabilidade_compra * 100,
+                                   resposta_chatgpt=resposta_chatgpt)
+
+        except Exception as e:
+            return render_template('add_client.html', error=f"Ocorreu um erro: {str(e)}")
+
     return render_template('add_client.html')
+
+def enviar_mensagem_chatgpt(mensagem):
+    headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
+    link = "https://api.openai.com/v1/chat/completions"
+    id_modelo = "gpt-3.5-turbo"
+
+    body_mensagem = {
+        "model": id_modelo,
+        "messages": [
+            {"role": "user", "content": mensagem}
+        ]
+    }
+
+    try:
+        response = requests.post(link, headers=headers, json=body_mensagem)
+        response.raise_for_status()  # Levanta um erro para respostas de erro HTTP
+        resposta = response.json()
+        return resposta["choices"][0]["message"]["content"]
+    except requests.exceptions.RequestException as e:
+        return f"Erro ao se comunicar com a API: {str(e)}"
+    except (KeyError, IndexError):
+        return "Erro inesperado ao processar a resposta da API."
+
 
 
 if __name__ == '__main__':

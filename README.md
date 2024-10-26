@@ -73,14 +73,14 @@ Para executar o projeto, siga estas etapas:
 
 2. **Ative o ambiente virtual:**
 
-   No Windows:
+   No Windows (bach):
    ```bash
-   venv\Scripts\activate 
+   source venv/Scripts/activate 
    ```
 
-   No macOS ou Linux:
+   No Windows (cmd):
    ```bash
-   source venv/bin/activate 
+   venv\Scripts\activate
    ```
 3. **Instale as dependências:**
    ```bash
