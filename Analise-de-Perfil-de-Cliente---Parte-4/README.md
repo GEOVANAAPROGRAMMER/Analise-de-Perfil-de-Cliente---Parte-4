@@ -111,5 +111,5 @@ Para executar o projeto, siga estas etapas:
    ```
 
 ## Links do Github
-* [Visite o Github](https://github.com/GEOVANAAPROGRAMMER/Analise-de-Perfil-de-Cliente---Parte-2)
+* [Visite o Github]([https://github.com/GEOVANAAPROGRAMMER/Analise-de-Perfil-de-Cliente---Parte-2](https://github.com/GEOVANAAPROGRAMMER/Analise-de-Perfil-de-Cliente---Parte-4))
 * [Visite o vídeo do projeto](https://www.youtube.com/watch?v=MG7j3jwyQyc)
