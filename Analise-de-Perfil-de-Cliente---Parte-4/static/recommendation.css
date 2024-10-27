@@ -1,0 +1,67 @@
+/* Corpo da página de recomendação */
+.recommendation-body {
+    font-family: 'Arial', sans-serif;
+    background-color: #131357; /* Cor de fundo suave */
+    color: hsl(0, 0%, 0%); /* Cor do texto */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Faz com que o corpo ocupe toda a altura da janela */
+}
+
+/* Contêiner principal da página de recomendação */
+.recommendation-container {
+    text-align: center;
+    padding: 50px;
+    background: #ebf3ff; /* Cor de fundo branca para o contêiner */
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    max-width: 800px; /* Limita a largura máxima do contêiner */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto; /* Centraliza horizontalmente o contêiner */
+}
+
+/* Estilo do cabeçalho */
+.recommendation-container h1 {
+    font-size: 2.5em;
+    color: #000000;
+    margin: 20px 0;
+}
+
+/* Estilo do texto de probabilidade */
+.recommendation-container p {
+    font-size: 1.2em;
+    color: #000000;
+    margin: 10px 0;
+}
+
+/* Estilo do título de seção */
+.recommendation-container h2 {
+    font-size: 1.5em;
+    color: #000000;
+    margin: 20px 0 10px;
+}
+
+/* Botão de retorno */
+.recommendation-button {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #28a745; /* Fundo verde */
+    text-decoration: none;
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.recommendation-button:hover {
+    background-color: #218838; /* Verde mais escuro para hover */
+}

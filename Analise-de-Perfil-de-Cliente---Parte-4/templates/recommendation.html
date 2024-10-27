@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='recommendation.css') }}">
+    <title>Recomendação de Oferta</title>
+</head>
+<body class="recommendation-body">
+    <div class="recommendation-container">
+        <h1>Recomendação de Oferta</h1>
+        <p>Probabilidade de compra: {{ probabilidade_compra }}%</p>
+
+        <h2>Resposta do ChatGPT</h2>
+        <p>{{ resposta_chatgpt }}</p>
+
+        <a href="{{ url_for('index') }}" class="recommendation-button">Retorne à página Inicial</a>
+    </div>
+</body>
+</html>

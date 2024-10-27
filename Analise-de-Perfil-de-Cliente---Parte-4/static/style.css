@@ -1,0 +1,209 @@
+/* Estilos para a página inicial (index.html) */
+
+/* Corpo da página inicial */
+.index-body {
+    font-family: 'Arial', sans-serif;
+    background-color: #131357;
+    /* Cor de fundo suave */
+    color: hsl(0, 0%, 0%);
+    /* Cor do texto */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    /* Empilha os elementos verticalmente */
+    align-items: center;
+    /* Centraliza horizontalmente */
+    height: 100vh;
+    /* Faz com que o corpo ocupe toda a altura da janela */
+    justify-content: center;
+    /* Centraliza verticalmente */
+}
+
+/* Estilo do cabeçalho na página inicial */
+.index-container h1 {
+    font-size: 2.5em;
+    /* Tamanho da fonte maior */
+    color: #2c3e50;
+    margin: 20px 0;
+    /* Espaçamento acima e abaixo do título */
+    text-align: center;
+    /* Centraliza o texto */
+}
+
+/* Contêiner principal da página inicial */
+.index-container {
+    text-align: center;
+    padding: 50px;
+    background: #ffffff;
+    /* Cor de fundo branca para o contêiner */
+    border-radius: 10px;
+    /* Bordas arredondadas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    max-width: 800px;
+    /* Limita a largura máxima do contêiner */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* Empilha os elementos verticalmente */
+    align-items: center;
+    /* Centraliza horizontalmente */
+    justify-content: center;
+    /* Centraliza verticalmente */
+    margin: 0 auto;
+    /* Centraliza horizontalmente o contêiner */
+}
+
+/* Contêiner dos botões na página inicial */
+.index-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    /* Espaço entre os botões */
+    margin-top: 30px;
+    /* Espaço acima dos botões */
+}
+
+/* Estilo dos botões na página inicial */
+.index-button {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #28a745;
+    /* Fundo verde */
+    text-decoration: none;
+    border-radius: 5px;
+    /* Bordas arredondadas */
+    transition: background-color 0.3s;
+    /* Transição suave para hover */
+}
+
+.index-button:hover {
+    background-color: #218838;
+    /* Verde mais escuro para hover */
+}
+
+
+/* Corpo da página de dashboard */
+.dashboard-body {
+    font-family: 'Arial', sans-serif;
+    background-color: #131357;
+    /* Cor de fundo suave */
+    color: #000000;
+    /* Cor do texto */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    /* Empilha os elementos verticalmente */
+    align-items: center;
+    /* Centraliza horizontalmente */
+    height: 100vh;
+    /* Faz com que o corpo ocupe toda a altura da janela */
+}
+
+/* Estilo do cabeçalho na página de dashboard */
+.dashboard-header h1 {
+    font-size: 2.5em;
+    /* Tamanho da fonte maior */
+    color: #ffffff;
+    margin: 40px 0;
+    /* Espaçamento acima e abaixo do título */
+    text-align: center;
+    /* Centraliza o texto */
+}
+
+/* Contêiner principal da página de dashboard */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    /* Empilha os elementos verticalmente */
+    align-items: center;
+    /* Centraliza horizontalmente */
+    padding: 20px;
+    background: #bed0ec;
+    /* Cor de fundo branca para o contêiner */
+    border-radius: 10px;
+    /* Bordas arredondadas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    max-width: 1200px;
+    /* Limita a largura máxima do contêiner */
+    width: 100%;
+    height: auto;
+    /* Altura automática para ajustar ao conteúdo */
+    position: relative;
+    /* Necessário para posicionar o botão */
+}
+
+/* Contêiner para gráficos na página de dashboard */
+.dashboard-chart-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    /* Aumenta o espaço entre os gráficos */
+    justify-content: space-between;
+    /* Ajusta o espaço entre os gráficos */
+    margin-bottom: 80px;
+    /* Espaço abaixo dos gráficos para o botão */
+}
+
+/* Estiliza cada gráfico na página de dashboard */
+.dashboard-chart {
+    flex: 1 1 calc(50% - 30px);
+    /* Dois gráficos por linha, com margem */
+    box-sizing: border-box;
+    background: #ffffff;
+    /* Cor de fundo branca para o gráfico */
+    border-radius: 10px;
+    /* Bordas arredondadas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    padding: 20px;
+    text-align: center;
+}
+
+/* Estilo das imagens dos gráficos na página de dashboard */
+.dashboard-chart img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    /* Bordas arredondadas nas imagens */
+}
+
+/* Botão de navegação na página de dashboard */
+.dashboard-button {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #317931;
+    /* Fundo verde */
+    text-decoration: none;
+    border-radius: 5px;
+    /* Bordas arredondadas */
+    transition: background-color 0.3s;
+    /* Transição suave para hover */
+    position: absolute;
+    bottom: 20px;
+    /* Espaço abaixo do botão */
+    left: 50%;
+    transform: translateX(-50%);
+    /* Centraliza o botão horizontalmente */
+}
+
+.dashboard-button:hover {
+    background-color: #085318;
+    /* Verde mais escuro para hover */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .dashboard-chart {
+        flex: 1 1 100%;
+        /* Gráficos ocupam toda a largura em telas pequenas */
+    }
+}

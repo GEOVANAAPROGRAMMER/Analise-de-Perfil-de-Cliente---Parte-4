@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='add_client.css') }}">
+
+    <div class="container">
+    <script>
+        // Mapeamento dos estados para suas siglas e regiões
+        const stateToUF = {
+            'Acre': 'AC',
+            'Alagoas': 'AL',
+            'Amapá': 'AP',
+            'Amazonas': 'AM',
+            'Bahia': 'BA',
+            'Ceará': 'CE',
+            'Distrito Federal': 'DF',
+            'Espírito Santo': 'ES',
+            'Fora do Brasil': 'Fora do Brasil',
+            'Goiás': 'GO',
+            'Maranhão': 'MA',
+            'Mato Grosso': 'MT',
+            'Mato Grosso do Sul': 'MS',
+            'Minas Gerais': 'MG',
+            'Pará': 'PA',
+            'Paraíba': 'PB',
+            'Paraná': 'PR',
+            'Pernambuco': 'PE',
+            'Piauí': 'PI',
+            'Rio de Janeiro': 'RJ',
+            'Rio Grande do Norte': 'RN',
+            'Rio Grande do Sul': 'RS',
+            'Rondônia': 'RO',
+            'Roraima': 'RR',
+            'Santa Catarina': 'SC',
+            'São Paulo': 'SP',
+            'Sergipe': 'SE',
+            'Tocantins': 'TO'
+        };
+
+        const stateToRegion = {
+            'Acre': 'Norte',
+            'Alagoas': 'Nordeste',
+            'Amapá': 'Norte',
+            'Amazonas': 'Norte',
+            'Bahia': 'Nordeste',
+            'Ceará': 'Nordeste',
+            'Distrito Federal': 'Centro-Oeste',
+            'Espírito Santo': 'Sudeste',
+            'Fora do Brasil': 'Fora do Brasil',
+            'Goiás': 'Centro-Oeste',
+            'Maranhão': 'Nordeste',
+            'Mato Grosso': 'Centro-Oeste',
+            'Mato Grosso do Sul': 'Centro-Oeste',
+            'Minas Gerais': 'Sudeste',
+            'Pará': 'Norte',
+            'Paraíba': 'Nordeste',
+            'Paraná': 'Sul',
+            'Pernambuco': 'Nordeste',
+            'Piauí': 'Nordeste',
+            'Rio de Janeiro': 'Sudeste',
+            'Rio Grande do Norte': 'Nordeste',
+            'Rio Grande do Sul': 'Sul',
+            'Rondônia': 'Norte',
+            'Roraima': 'Norte',
+            'Santa Catarina': 'Sul',
+            'São Paulo': 'Sudeste',
+            'Sergipe': 'Nordeste',
+            'Tocantins': 'Norte'
+        };
+
+        // Função para atualizar a faixa etária com base na idade
+        function updateAgeRange() {
+            const age = parseInt(document.getElementById('age').value, 10);
+            const ageRange = document.getElementById('age_range');
+            const error = document.getElementById('age_error');
+
+            if (!isNaN(age)) {
+                if (age < 10 || age > 100) {
+                    error.textContent = 'A idade deve estar entre 10 e 100.';
+                    ageRange.value = '';
+                } else {
+                    error.textContent = '';
+                    if (age >= 10 && age <= 16) {
+                        ageRange.value = '10-16';
+                    } else if (age >= 17 && age <= 21) {
+                        ageRange.value = '17-21';
+                    } else if (age >= 22 && age <= 24) {
+                        ageRange.value = '22-24';
+                    } else if (age >= 25 && age <= 29) {
+                        ageRange.value = '25-29';
+                    } else if (age >= 30 && age <= 34) {
+                        ageRange.value = '30-34';
+                    } else if (age >= 35 && age <= 39) {
+                        ageRange.value = '35-39';
+                    } else if (age >= 40 && age <= 44) {
+                        ageRange.value = '40-44';
+                    } else if (age >= 45 && age <= 49) {
+                        ageRange.value = '45-49';
+                    } else if (age >= 50 && age <= 54) {
+                        ageRange.value = '50-54';
+                    } else if (age >= 55) {
+                        ageRange.value = '55+';
+                    } else {
+                        ageRange.value = '';
+                    }
+                }
+            } else {
+                error.textContent = '';
+                ageRange.value = '';
+            }
+        }
+
+        // Função para atualizar a UF e a Região com base no estado selecionado
+        function updateUFAndRegion() {
+            const state = document.getElementById('state').value;
+            const uf = document.getElementById('uf');
+            const region = document.getElementById('region');
+            const stateError = document.getElementById('state_error');
+
+            if (state in stateToUF) {
+                uf.value = stateToUF[state];
+                region.value = stateToRegion[state] || '';
+                stateError.textContent = '';
+            } else {
+                uf.value = '';
+                region.value = '';
+                stateError.textContent = 'Escolha um estado válido.';
+            }
+        }
+
+        // Função para validar o formulário
+        function validateForm(event) {
+            const age = parseInt(document.getElementById('age').value, 10);
+            const gender = document.getElementById('gender').value;
+            const state = document.getElementById('state').value;
+            const error = document.getElementById('age_error');
+            const genderError = document.getElementById('gender_error');
+            const stateError = document.getElementById('state_error');
+
+            if (isNaN(age) || age < 10 || age > 100) {
+                error.textContent = 'A idade deve estar entre 10 e 100.';
+                event.preventDefault(); // Impede o envio do formulário
+                return false;
+            }
+
+            if (gender !== 'Feminino' && gender !== 'Masculino' && gender !== 'Outro') {
+                genderError.textContent = 'O gênero deve ser "Feminino", "Masculino" ou "Outro".';
+                event.preventDefault(); // Impede o envio do formulário
+                return false;
+            }
+
+            const validStates = Object.keys(stateToUF);
+
+            if (!validStates.includes(state)) {
+                stateError.textContent = 'Escolha um estado válido.';
+                event.preventDefault(); // Impede o envio do formulário
+                return false;
+            }
+
+            error.textContent = '';
+            genderError.textContent = '';
+            stateError.textContent = '';
+            return true;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Adicionar Novo Cliente</h1>
+    <form action="{{ url_for('add_client') }}" method="post">
+        <label for="age">Idade:</label>
+        <input type="number" id="age" name="age" min="10" max="100" required oninput="updateAgeRange()"><br>
+
+        <label for="age_range">Faixa idade:</label>
+        <input type="text" id="age_range" name="age_range" readonly required><br>
+
+        <span id="age_error" style="color: red;"></span><br>
+
+        <label for="gender">Gênero:</label>
+        <select id="gender" name="gender" required>
+            <option value="" disabled selected>Escolha um gênero</option>
+            <option value="Feminino">Feminino</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Outro">Outro</option>
+        </select><br>
+
+        <span id="gender_error" style="color: red;"></span><br>
+
+        <label for="state">Estado onde mora:</label>
+        <select id="state" name="state" required onchange="updateUFAndRegion()">
+            <option value="" disabled selected>Escolha um estado</option>
+            <option value="Acre">Acre</option>
+            <option value="Alagoas">Alagoas</option>
+            <option value="Amapá">Amapá</option>
+            <option value="Amazonas">Amazonas</option>
+            <option value="Bahia">Bahia</option>
+            <option value="Ceará">Ceará</option>
+            <option value="Distrito Federal">Distrito Federal</option>
+            <option value="Espírito Santo">Espírito Santo</option>
+            <option value="Fora do Brasil">Fora do Brasil</option>
+            <option value="Goiás">Goiás</option>
+            <option value="Maranhão">Maranhão</option>
+            <option value="Mato Grosso">Mato Grosso</option>
+            <option value="Mato Grosso do Sul">Mato Grosso do Sul</option>
+            <option value="Minas Gerais">Minas Gerais</option>
+            <option value="Pará">Pará</option>
+            <option value="Paraíba">Paraíba</option>
+            <option value="Paraná">Paraná</option>
+            <option value="Pernambuco">Pernambuco</option>
+            <option value="Piauí">Piauí</option>
+            <option value="Rio de Janeiro">Rio de Janeiro</option>
+            <option value="Rio Grande do Norte">Rio Grande do Norte</option>
+            <option value="Rio Grande do Sul">Rio Grande do Sul</option>
+            <option value="Rondônia">Rondônia</option>
+            <option value="Roraima">Roraima</option>
+            <option value="Santa Catarina">Santa Catarina</option>
+            <option value="São Paulo">São Paulo</option>
+            <option value="Sergipe">Sergipe</option>
+            <option value="Tocantins">Tocantins</option>
+        </select><br>
+
+        <span id="state_error" style="color: red;"></span><br>
+
+        <label for="uf">UF onde mora:</label>
+        <input type="text" id="uf" name="uf" readonly required><br>
+
+        <label for="region">Região onde mora:</label>
+        <input type="text" id="region" name="region" readonly required><br>
+
+        <label for="education_level">Nível de Ensino:</label>
+        <select id="education_level" name="education_level" required>
+            <option value="" disabled selected>Escolha um nível de ensino</option>
+            <option value="Doutorado ou Phd">Doutorado ou Phd</option>
+            <option value="Estudante de Graduação">Estudante de Graduação</option>
+            <option value="Graduação/Bacharelado">Graduação/Bacharelado</option>
+            <option value="Mestrado">Mestrado</option>
+            <option value="Não tenho graduação formal">Não tenho graduação formal</option>
+            <option value="Pós-graduação">Pós-graduação</option>
+            <option value="Prefiro não informar">Prefiro não informar</option>
+        </select><br>
+
+        <label for="formation_area">Área de Formação:</label>
+        <select id="formation_area" name="formation_area" required>
+            <option value="" disabled selected>Escolha uma área de formação</option>
+            <option value="Ciências Biológicas/Farmácia/Medicina/Áea da Saúde">Ciências Biológicas/Farmácia/Medicina/Áea
+                da Saúde</option>
+            <option value="Ciências Sociais">Ciências Sociais</option>
+            <option value="Computação / Engenharia de Software / Sistemas de Informação/ TI">Computação / Engenharia de
+                Software / Sistemas de Informação/ TI</option>
+            <option value="Economia/ Administração / Contabilidade / Finanças">Economia/ Administração / Contabilidade /
+                Finanças</option>
+            <option value="Estatística/ Matemática / Matemática Computacional">Estatística/ Matemática / Matemática
+                Computacional</option>
+            <option value="Marketing / Publicidade / Comunicação / Jornalismo">Marketing / Publicidade / Comunicação /
+                Jornalismo</option>
+            <option value="Outras">Outras</option>
+            <option value="Outras Engenharias">Outras Engenharias</option>
+            <option value="Química / Física">Química / Física</option>
+        </select><br>
+
+        <label for="job_status">Situação atual de trabalho:</label>
+        <select id="job_status" name="job_status" required>
+            <option value="" disabled selected>Escolha uma situação de trabalho</option>
+            <option value="Desempregado">Desempregado</option>
+            <option value="Desempregado e não estou buscando recolocação">Desempregado e não estou buscando recolocação
+            </option>
+            <option value="Empreendedor ou Empregado (CNPJ)">Empreendedor ou Empregado (CNPJ)</option>
+            <option value="Empregado (CLT)">Empregado (CLT)</option>
+            <option value="Estagiário">Estagiário</option>
+            <option value="Freelancer">Freelancer</option>
+            <option value="Servidor Público">Servidor Público</option>
+            <option value="Somente Estudante (graduação)">Somente Estudante (graduação)</option>
+            <option value="Somente Estudante (pós-graduação)">Somente Estudante (pós-graduação)</option>
+            <option value="Trabalho na Área Acadêmica/Pesquisador">Trabalho na Área Acadêmica/Pesquisador</option>
+            <option value="Vivo fora do Brasil e trabalho para empresa de fora do Brasil">Vivo fora do Brasil e trabalho
+                para empresa de fora do Brasil</option>
+            <option value="Vivo no Brasil e trabalho remoto para empresa de fora do Brasil (PJ)">Vivo no Brasil e
+                trabalho remoto para empresa de fora do Brasil (PJ)</option>
+            <option value="Prefiro não informar">Prefiro não informar</option>
+        </select><br>
+
+        <label for="sector">Setor:</label>
+        <select id="sector" name="sector" required>
+            <option value="" disabled selected>Escolha um setor</option>
+            <option value="Agronegócios">Agronegócios</option>
+            <option value="Área da Saúde">Área da Saúde</option>
+            <option value="buscando recolocação">buscando recolocação</option>
+            <option value="Construção Civil">Construção Civil</option>
+            <option value="Consultoria">Consultoria</option>
+            <option value="Educação">Educação</option>
+            <option value="Energia">Energia</option>
+            <option value="Entretenimento ou Esportes">Entretenimento ou Esportes</option>
+            <option value="Finanças ou Bancos">Finanças ou Bancos</option>
+            <option value="Imobiliário">Imobiliário</option>
+            <option value="Industria">Industria</option>
+            <option value="Internet/Ecommerce">Internet/Ecommerce</option>
+            <option value="Logística">Logística</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Seguros ou Previdência">Seguros ou Previdência</option>
+            <option value="Serviços">Serviços</option>
+            <option value="Setor Alimentício">Setor Alimentício</option>
+            <option value="Setor Automotivo">Setor Automotivo</option>
+            <option value="Setor Público">Setor Público</option>
+            <option value="Tecnologia/Fábrica de Software">Tecnologia/Fábrica de Software</option>
+            <option value="Telecomunicação">Telecomunicação</option>
+            <option value="Varejo">Varejo</option>
+            <option value="Outro">Outro</option>
+        </select><br>
+
+        <label for="work_form">Forma de trabalho:</label>
+        <select id="work_form" name="work_form" required>
+            <option value="" disabled selected>Escolha uma forma de trabalho</option>
+            <option value="Modelo 100% presencial">Modelo 100% presencial</option>
+            <option value="Modelo 100% remoto">Modelo 100% remoto</option>
+            <option value="Modelo híbrido com dias fixos de trabalho presencial">Modelo híbrido com dias fixos de
+                trabalho presencial</option>
+            <option
+                value="Modelo híbrido flexível (o funcionário tem liberdade para escolher quando estar no escritório presencialmente)">
+                Modelo híbrido flexível (o funcionário tem liberdade para escolher quando estar no escritório
+                presencialmente)</option>
+        </select><br>
+
+        <label for="salary_range">Faixa salarial:</label>
+        <select id="salary_range" name="salary_range" required>
+            <option value="" disabled selected>Escolha uma faixa salarial</option>
+            <option value="Menos de R$ 1.000/mês">Menos de R$ 1.000/mês</option>
+            <option value="de R$ 1.001/mês a R$ 2.000/mês">de R$ 1.001/mês a R$ 2.000/mês</option>
+            <option value="de R$ 2.001/mês a R$ 3.000/mês">de R$ 2.001/mês a R$ 3.000/mês</option>
+            <option value="de R$ 3.001/mês a R$ 4.000/mês">de R$ 3.001/mês a R$ 4.000/mês</option>
+            <option value="de R$ 4.001/mês a R$ 6.000/mês">de R$ 4.001/mês a R$ 6.000/mês</option>
+            <option value="de R$ 6.001/mês a R$ 8.000/mês">de R$ 6.001/mês a R$ 8.000/mês</option>
+            <option value="de R$ 8.001/mês a R$ 12.000/mês">de R$ 8.001/mês a R$ 12.000/mês</option>
+            <option value="de R$ 12.001/mês a R$ 16.000/mês">de R$ 12.001/mês a R$ 16.000/mês</option>
+            <option value="de R$ 16.001/mês a R$ 20.000/mês">de R$ 16.001/mês a R$ 20.000/mês</option>
+            <option value="de R$ 20.001/mês a R$ 25.000/mês">de R$ 20.001/mês a R$ 25.000/mês</option>
+            <option value="de R$ 25.001/mês a R$ 30.000/mês">de R$ 25.001/mês a R$ 30.000/mês</option>
+            <option value="de R$ 30.001/mês a R$ 40.000/mês">de R$ 30.001/mês a R$ 40.000/mês</option>
+            <option value="Acima de R$ 40.001/mês">Acima de R$ 40.001/mês</option>
+        </select><br>
+
+        <label>Finalidade de Compra:</label><br>
+        <label><input type="checkbox" name="purchase_purpose" value="Profissional"> Profissional</label><br>
+        <label><input type="checkbox" name="purchase_purpose" value="Acadêmica"> Acadêmica</label><br>
+        <label><input type="checkbox" name="purchase_purpose" value="Entretenimento"> Entretenimento</label><br>
+
+        <div class="botoes">
+            <input type="submit" value="Enviar">
+            <a href="{{ url_for('index') }}" class="button-style">Retornar à página inicial</a>
+        </div>
+    </form>
+
+</div>
+</body>
+
+</html>
