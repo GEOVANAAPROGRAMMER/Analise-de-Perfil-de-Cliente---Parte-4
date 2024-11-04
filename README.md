@@ -58,10 +58,10 @@ O protótipo funcional inclui três principais funcionalidades:
 
 ## Layout
 
-![Página Inicial](./assets/Bem%20vindo.png)
-![Dashboard](./assets/Dashboard.png)
-![Formulário de Adição](./assets/Formulario.png)
-![Recomendação de oferta](./assets/Recomendacao.png)
+![Página Inicial](https://imgur.com/P9dx6uh)
+![Dashboard](https://imgur.com/BJqyHtz)
+![Formulário de Adição](https://imgur.com/zgTEHz2)
+![Recomendação de oferta](https://imgur.com/HhTXUf6)
 
 ## Como rodar este projeto?
 
