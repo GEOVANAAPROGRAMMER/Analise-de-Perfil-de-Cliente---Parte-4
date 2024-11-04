@@ -1,5 +1,12 @@
 # PROJETO DE ANÁLISE DE PERFIL DE CLIENTES
 
+### Integrantes do Grupo:
+* **Nome Completo:** Ana Paula Nascimento Silva- rm552513
+* **Nome Completo:** Calina Thalya Santana da Silva- rm552523
+* **Nome Completo:** Geovana Ribeiro Domingos Silva- rm99646
+* **Nome Completo:**Leonardo Camargo Lucena- rm552537
+* **Nome Completo:** Nathan Nunes Calsonari- rm552539
+
 ## Índice
 - [Objetivo do Projeto](#objetivo-do-projeto)
 - [Detalhamento da Arquitetura de IA](#detalhamento-da-arquitetura-de-ia)
