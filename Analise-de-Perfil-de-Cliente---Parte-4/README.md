@@ -112,4 +112,4 @@ Para executar o projeto, siga estas etapas:
 
 ## Links do Github
 * [Visite o Github](https://github.com/GEOVANAAPROGRAMMER/Analise-de-Perfil-de-Cliente---Parte-4)
-* [Visite o vídeo do projeto](https://www.youtube.com/watch?v=MG7j3jwyQyc)
+* [Visite o vídeo do projeto](https://youtu.be/0aponM-JqGg?si=GbyeBh4uD4DVB-KN)
